@@ -1,0 +1,2060 @@
+<!DOCTYPE html>
+<!-- saved from url=(0154)file:///Users/acacia/Library/Application%20Support/TRAE%20SOLO/ModularData/ai-agent/work-mode-projects/69fadcb4e6f72d103b8b3346/upload-this-to-github.html -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>省区管理 Demo</title>
+<style>
+:root {
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --text: #1f2a37;
+  --muted: #7a8699;
+  --line: #e6ebf2;
+  --primary: #2667ff;
+  --primary-soft: #edf3ff;
+  --success: #19a974;
+  --warning: #ffb020;
+  --danger: #f04438;
+  --shadow: 0 12px 30px rgba(32, 54, 88, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(38, 103, 255, 0.08), transparent 28%),
+    linear-gradient(180deg, #f8fbff 0%, #eef3f9 100%);
+  color: var(--text);
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  padding: 18px;
+}
+
+.page-shell {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.phone-frame {
+  width: min(100%, 390px);
+  min-height: calc(100vh - 36px);
+  background: #0f1728;
+  border-radius: 28px;
+  padding: 10px;
+  box-shadow: 0 20px 60px rgba(15, 23, 40, 0.25);
+  position: relative;
+}
+
+.phone-notch {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 128px;
+  height: 24px;
+  background: #0f1728;
+  border-radius: 0 0 18px 18px;
+  z-index: 2;
+}
+
+#app {
+  min-height: calc(100vh - 56px);
+  background: var(--bg);
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+.screen {
+  min-height: calc(100vh - 56px);
+  padding: 18px 16px 94px;
+}
+
+.screen.dashboard {
+  background:
+    linear-gradient(180deg, rgba(38, 103, 255, 0.08) 0%, rgba(255, 255, 255, 0) 30%),
+    var(--bg);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  margin-bottom: 18px;
+}
+
+.topbar.compact {
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.back-btn,
+.ghost-btn,
+.icon-btn {
+  border: 0;
+  background: rgba(255, 255, 255, 0.84);
+  color: var(--text);
+  border-radius: 12px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 12px;
+  font-size: 14px;
+  box-shadow: 0 2px 10px rgba(52, 72, 95, 0.08);
+}
+
+.back-btn {
+  width: 36px;
+  padding: 0;
+  font-size: 18px;
+}
+
+.ghost-btn {
+  color: var(--primary);
+  background: var(--primary-soft);
+  font-weight: 600;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.subtitle {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0 12px;
+}
+
+.section-title h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.section-title span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.hero-card,
+.panel,
+.stat-card,
+.region-card,
+.candidate-card,
+.detail-card,
+.summary-card {
+  background: var(--card);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+
+.hero-card {
+  padding: 18px;
+}
+
+.hero-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.hero-main {
+  flex: 1;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(38, 103, 255, 0.1);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.hero-main h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.hero-main p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+  font-size: 13px;
+}
+
+.hero-side {
+  width: 92px;
+  flex-shrink: 0;
+  border-radius: 18px;
+  padding: 14px 10px;
+  background: linear-gradient(180deg, #2667ff 0%, #5b8dff 100%);
+  color: #fff;
+}
+
+.hero-side strong {
+  display: block;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.hero-side span {
+  display: block;
+  margin-top: 6px;
+  opacity: 0.88;
+  font-size: 12px;
+}
+
+.hero-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.primary-btn,
+.secondary-btn {
+  border: 0;
+  border-radius: 14px;
+  height: 42px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.primary-btn {
+  background: var(--primary);
+  color: #fff;
+}
+
+.secondary-btn {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.panel-tile {
+  background: var(--card);
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+
+.tile-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(38, 103, 255, 0.18), rgba(38, 103, 255, 0.04));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.panel-tile h4 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.panel-tile p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.summary-card {
+  padding: 16px;
+}
+
+.summary-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.summary-head h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.summary-list {
+  display: grid;
+  gap: 12px;
+}
+
+.summary-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.summary-item small {
+  color: var(--muted);
+}
+
+.summary-item strong {
+  color: var(--primary);
+  font-size: 18px;
+}
+
+.metric-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.table-card {
+  background: var(--card);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.table-toolbar h4 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.table-toolbar .count {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.table-scroll {
+  overflow: hidden;
+}
+
+.vacancy-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  min-width: 0;
+  font-size: 11px;
+}
+
+.vacancy-table thead th {
+  position: sticky;
+  top: 0;
+  background: #f7faff;
+  color: #475467;
+  text-align: left;
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--line);
+  font-weight: 800;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.vacancy-table tbody td {
+  padding: 8px 6px;
+  border-bottom: 1px solid rgba(230, 235, 242, 0.9);
+  vertical-align: top;
+}
+
+.vacancy-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.vacancy-table .region-cell {
+  font-weight: 800;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cell-link {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+.vacancy-table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cell-stack {
+  display: flex;
+  justify-content: center;
+}
+
+.cell-sub {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.vacancy-pill {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: rgba(255, 176, 32, 0.18);
+  color: #a86800;
+  font-weight: 800;
+  border: 1px solid rgba(255, 176, 32, 0.3);
+  gap: 6px;
+}
+
+.vacancy-pill.blank {
+  width: 52px;
+  background: #e5e7eb;
+  border-color: #e5e7eb;
+  padding: 0;
+}
+
+.vacancy-pill strong {
+  font-size: 12px;
+}
+
+.slash {
+  color: #98a2b3;
+  font-weight: 800;
+}
+
+.slash-inline {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.slash-note {
+  display: none;
+  font-size: 11px;
+  color: #98a2b3;
+}
+
+.slash-inline.show .slash-note {
+  display: inline;
+}
+
+.link-person.inline {
+  font-size: 11px;
+}
+
+.link-person.inline[disabled] {
+  color: #98a2b3;
+}
+
+.stat-card {
+  padding: 14px;
+}
+
+.stat-card span {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+
+.stat-card strong {
+  font-size: 22px;
+}
+
+.filter-bar,
+.chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.filter-chip {
+  border: 0;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--muted);
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(52, 72, 95, 0.06);
+}
+
+.filter-chip.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.region-list,
+.candidate-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.region-card {
+  padding: 16px;
+}
+
+.region-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.region-title h4 {
+  margin: 0 0 4px;
+  font-size: 16px;
+}
+
+.region-title p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.badge-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.badge.primary {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.badge.warning {
+  background: rgba(255, 176, 32, 0.18);
+  color: #a86800;
+}
+
+.badge.success {
+  background: rgba(25, 169, 116, 0.15);
+  color: #0f8a5f;
+}
+
+.badge.danger {
+  background: rgba(240, 68, 56, 0.13);
+  color: var(--danger);
+}
+
+.position-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.position-item {
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.position-item span {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  margin-bottom: 7px;
+}
+
+.position-item button,
+.link-person {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.empty-role {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.empty-label {
+  color: var(--warning);
+  font-weight: 700;
+}
+
+.region-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.candidate-card {
+  padding: 16px;
+}
+
+.candidate-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.candidate-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2667ff, #9bb8ff);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.avatar-glyph {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.candidate-name h4,
+.profile-head h3 {
+  margin: 0;
+}
+
+.candidate-name p,
+.profile-head p,
+.helper-text,
+.detail-row small {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.score-pill {
+  min-width: 64px;
+  height: 36px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(38, 103, 255, 0.18), rgba(38, 103, 255, 0.06));
+  color: var(--primary);
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0 14px;
+}
+
+.tag {
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  color: #475467;
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.candidate-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.manage-overview {
+  display: grid;
+  gap: 12px;
+}
+
+.manage-data-card,
+.manage-summary-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.manage-data-card h4,
+.manage-summary-card h4 {
+  margin: 0 0 12px;
+  font-size: 15px;
+}
+
+.manage-filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.manage-filter {
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  font-size: 12px;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.manage-filter::after {
+  content: "▾";
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.manage-tabs {
+  display: flex;
+  gap: 10px;
+  margin-top: 2px;
+  margin-bottom: 14px;
+}
+
+.manage-tab {
+  flex: 1;
+  height: 34px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  background: #f3f6fb;
+  color: var(--muted);
+}
+
+.manage-tab.active {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.manage-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.manage-metric {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px 10px;
+  text-align: center;
+}
+
+.manage-metric strong {
+  display: block;
+  font-size: 20px;
+  color: var(--primary);
+}
+
+.manage-metric span {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.manage-progress-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px;
+  margin-top: 12px;
+}
+
+.manage-progress-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.manage-progress-top strong {
+  font-size: 14px;
+}
+
+.manage-progress-top span {
+  font-size: 12px;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.manage-wide-stat {
+  margin-top: 10px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+  text-align: center;
+}
+
+.manage-wide-stat strong {
+  color: var(--primary);
+  font-size: 22px;
+}
+
+.manage-wide-stat span {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.manage-section-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 14px;
+}
+
+.manage-section-card h4 {
+  margin: 0 0 12px;
+  font-size: 15px;
+}
+
+.manage-role-list {
+  display: grid;
+  gap: 10px;
+}
+
+.manage-role-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px solid var(--line);
+}
+
+.manage-role-item span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.manage-cadre-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 14px;
+}
+
+.manage-index-btn {
+  width: 100%;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid #b9d8ff;
+  background: #eef7ff;
+  color: #2a80ff;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.manage-role-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.manage-role-tab {
+  height: 28px;
+  border-radius: 8px 8px 0 0;
+  background: #f1f5fb;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.manage-role-tab.active {
+  background: #2a80ff;
+  color: #fff;
+}
+
+.manage-cadre-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.manage-cadre-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.manage-cadre-name h4 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.manage-cadre-name p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.mini-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 12px;
+}
+
+.mini-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #f1f5f9;
+  font-size: 11px;
+  color: #475467;
+  font-weight: 700;
+}
+
+.profile-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border-radius: 22px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+
+.profile-top {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.profile-top .avatar {
+  width: 58px;
+  height: 58px;
+  font-size: 18px;
+}
+
+.profile-head {
+  flex: 1;
+}
+
+.profile-headline {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.progress-box {
+  margin-top: 14px;
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--primary-soft);
+}
+
+.progress-box span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.progress-track {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(38, 103, 255, 0.12);
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #2667ff, #6f9cff);
+}
+
+.detail-card {
+  margin-top: 14px;
+  padding: 14px 16px;
+}
+
+.detail-card h4 {
+  margin: 0 0 12px;
+  font-size: 15px;
+}
+
+.detail-list {
+  display: grid;
+  gap: 12px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.detail-row span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.detail-row strong {
+  text-align: right;
+  font-size: 14px;
+}
+
+.bottom-bar {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 14px -16px -94px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(230, 235, 242, 0.9);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.tabbar {
+  position: sticky;
+  bottom: 0;
+  margin: 18px -16px -94px;
+  padding: 10px 18px calc(12px + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.94);
+  border-top: 1px solid rgba(230, 235, 242, 0.9);
+  display: flex;
+  justify-content: space-around;
+}
+
+.tabbar button {
+  border: 0;
+  background: transparent;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.tabbar button.active {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.tab-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f2f5f9;
+}
+
+.tabbar button.active .tab-icon {
+  background: var(--primary-soft);
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0;
+  }
+
+  .phone-frame {
+    width: 100%;
+    min-height: 100vh;
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .phone-notch {
+    display: none;
+  }
+
+  #app,
+  .screen,
+  .screen.dashboard {
+    min-height: 100vh;
+    border-radius: 0;
+  }
+}
+
+</style>
+</head>
+<body>
+<div class="page-shell"><div class="phone-frame"><div class="phone-notch"></div><div id="app">
+    <div class="screen dashboard">
+      <div class="topbar">
+        <div>
+          <h1 class="title">干部看板</h1>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        
+          <div class="panel-tile">
+            <h4>轮岗</h4>
+          </div>
+        
+          <div class="panel-tile">
+            <h4>储备干部池</h4>
+          </div>
+        
+          <div class="panel-tile">
+            <h4>任期</h4>
+          </div>
+        
+          <div class="panel-tile">
+            <h4>界龄</h4>
+          </div>
+        
+          <div class="panel-tile">
+            <h4>一线转正</h4>
+          </div>
+        
+          <div class="panel-tile">
+            <h4>职能转正</h4>
+          </div>
+        
+      </div>
+
+      <div class="summary-card" style="margin-top:14px">
+        <div class="summary-head">
+          <h4>干部空岗</h4>
+        </div>
+        <div class="summary-list">
+          
+            <div class="summary-item">
+              <small>省区总经理</small>
+              <strong>2人</strong>
+            </div>
+          
+            <div class="summary-item">
+              <small>省区营销官</small>
+              <strong>2人</strong>
+            </div>
+          
+            <div class="summary-item">
+              <small>省区运营官</small>
+              <strong>2人</strong>
+            </div>
+          
+            <div class="summary-item">
+              <small>省区开发官</small>
+              <strong>3人</strong>
+            </div>
+          
+        </div>
+        <div class="summary-actions">
+          <button class="ghost-btn" onclick="navigate(&#39;regions&#39;)">查看各部门空岗情况</button>
+        </div>
+      </div>
+    </div>
+  </div></div></div>
+<script>
+const state = {
+  page: "dashboard",
+  stack: [],
+  activeArea: "华北公司",
+  selectedRegionId: null,
+  selectedRole: null,
+  selectedPersonId: null
+};
+
+const areas = ["华北公司", "华中公司", "华南公司", "直属区域"];
+
+const dashboardTiles = [
+  { title: "轮岗" },
+  { title: "储备干部池" },
+  { title: "任期" },
+  { title: "界龄" },
+  { title: "一线转正" },
+  { title: "职能转正" }
+];
+
+const regionData = {
+  华北公司: [
+    {
+      id: "hb-jb",
+      name: "冀北省区",
+      area: "华北公司",
+      summary: "",
+      totalVacancies: 1,
+      reserveCount: 1,
+      hasCompilation: true,
+      leader: { name: "何毅", role: "省区经理" },
+      positions: {
+        总经理: { type: "person", personId: "p-heyi", name: "何毅" },
+        营销: { type: "person", personId: "p-heyi", name: "何毅" },
+        运营: { type: "person", personId: "p-gaohuanbao", name: "高焕宝" },
+        开发: { type: "vacancy", reserve: 1 }
+      }
+    },
+    {
+      id: "hb-heb",
+      name: "河北省区",
+      area: "华北公司",
+      summary: "",
+      totalVacancies: 0,
+      reserveCount: 0,
+      hasCompilation: false,
+      leader: { name: "石小雷", role: "省区经理" },
+      positions: {
+        总经理: { type: "person", personId: "p-shixiaolei", name: "石小雷" },
+        营销: { type: "person", personId: "p-shixiaolei", name: "石小雷" },
+        运营: { type: "none" },
+        开发: { type: "person", personId: "p-malizhi", name: "马立志" }
+      }
+    },
+    {
+      id: "hb-sxwf",
+      name: "山西外围省区",
+      area: "华北公司",
+      summary: "",
+      totalVacancies: 0,
+      reserveCount: 0,
+      hasCompilation: true,
+      leader: { name: "杨红记", role: "省区经理" },
+      positions: {
+        总经理: { type: "person", personId: "p-yanghongji", name: "杨红记" },
+        营销: { type: "person", personId: "p-yanghongji", name: "杨红记" },
+        运营: { type: "person", personId: "p-liucuiying", name: "刘翠英" },
+        开发: { type: "person", personId: "p-chenbin", name: "陈斌" }
+      }
+    },
+    {
+      id: "hb-sxzx",
+      name: "山西中心省区",
+      area: "华北公司",
+      summary: "",
+      totalVacancies: 1,
+      reserveCount: 1,
+      hasCompilation: true,
+      leader: { name: "屈洋", role: "省区经理" },
+      positions: {
+        总经理: { type: "person", personId: "p-quyang", name: "屈洋" },
+        营销: { type: "person", personId: "p-quyang", name: "屈洋" },
+        运营: { type: "person", personId: "p-yuanlinlin", name: "袁琳琳" },
+        开发: { type: "vacancy", reserve: 1 }
+      }
+    },
+    {
+      id: "hb-tj",
+      name: "天津省区",
+      area: "华北公司",
+      summary: "",
+      totalVacancies: 1,
+      reserveCount: 1,
+      hasCompilation: true,
+      leader: { name: "冯少川", role: "省区经理" },
+      positions: {
+        总经理: { type: "person", personId: "p-fengshaochuan", name: "冯少川" },
+        营销: { type: "vacancy", reserve: 1 },
+        运营: { type: "person", personId: "p-chenjing", name: "陈靓" },
+        开发: { type: "person", personId: "p-malizhi", name: "马立志" }
+      }
+    },
+    {
+      id: "hb-ld",
+      name: "鲁东省区",
+      area: "华北公司",
+      summary: "",
+      totalVacancies: 0,
+      reserveCount: 0,
+      hasCompilation: true,
+      leader: { name: "李玉瑞", role: "省区经理" },
+      positions: {
+        总经理: { type: "person", personId: "p-liyurui", name: "李玉瑞" },
+        营销: { type: "person", personId: "p-liyurui", name: "李玉瑞" },
+        运营: { type: "person", personId: "p-zhuhaibin", name: "朱海宾" },
+        开发: { type: "person", personId: "p-fubin", name: "付宾" }
+      }
+    },
+    {
+      id: "hb-lx",
+      name: "鲁西省区",
+      area: "华北公司",
+      summary: "",
+      totalVacancies: 0,
+      reserveCount: 0,
+      hasCompilation: true,
+      leader: { name: "王飞", role: "省区经理" },
+      positions: {
+        总经理: { type: "person", personId: "p-wangfei_hb", name: "王飞" },
+        营销: { type: "person", personId: "p-wangfei_hb", name: "王飞" },
+        运营: { type: "person", personId: "p-haoqi", name: "郝琦" },
+        开发: { type: "person", personId: "p-zhaoyilin", name: "赵一霖" }
+      }
+    }
+  ],
+  华中公司: [
+    {
+      id: "hz-hub",
+      name: "湖北省区",
+      area: "华中公司",
+      summary: "营销岗空缺，干部池中有3人可推荐",
+      totalVacancies: 1,
+      reserveCount: 3,
+      hasCompilation: true,
+      leader: { name: "王飞", role: "省区经理" },
+      positions: {
+        总经理: { type: "person", personId: "p-wangfei", name: "王飞" },
+        营销: { type: "vacancy", reserve: 3 },
+        运营: { type: "person", personId: "p-zhoupeng", name: "周鹏" },
+        开发: { type: "person", personId: "p-lixuan", name: "李轩" }
+      }
+    },
+    {
+      id: "hz-hun",
+      name: "湖南省区",
+      area: "华中公司",
+      summary: "关键岗位配置齐全，无空岗",
+      totalVacancies: 0,
+      reserveCount: 0,
+      hasCompilation: true,
+      leader: { name: "肖然", role: "省区经理" },
+      positions: {
+        总经理: { type: "person", personId: "p-xiaoran", name: "肖然" },
+        营销: { type: "person", personId: "p-tanghao", name: "唐浩" },
+        运营: { type: "person", personId: "p-wenjie", name: "文杰" },
+        开发: { type: "person", personId: "p-hanbo", name: "韩波" }
+      }
+    }
+  ],
+  华南公司: [
+    {
+      id: "hn-gd",
+      name: "广东省区",
+      area: "华南公司",
+      summary: "开发岗待补位，已从干部池锁定2名候选",
+      totalVacancies: 1,
+      reserveCount: 2,
+      hasCompilation: true,
+      leader: { name: "赵进", role: "省区经理" },
+      positions: {
+        总经理: { type: "person", personId: "p-zhaojin", name: "赵进" },
+        营销: { type: "person", personId: "p-lucen", name: "鲁岑" },
+        运营: { type: "person", personId: "p-huaxin", name: "华欣" },
+        开发: { type: "vacancy", reserve: 2 }
+      }
+    }
+  ],
+  直属区域: [
+    {
+      id: "zs-zx",
+      name: "直属事业部",
+      area: "直属区域",
+      summary: "用于承接通用逻辑，支持横向切换查看",
+      totalVacancies: 0,
+      reserveCount: 1,
+      hasCompilation: true,
+      leader: { name: "顾远", role: "负责人" },
+      positions: {
+        总经理: { type: "person", personId: "p-guyuan", name: "顾远" },
+        营销: { type: "person", personId: "p-linyu", name: "林宇" },
+        运营: { type: "person", personId: "p-chenke", name: "陈科" },
+        开发: { type: "person", personId: "p-suqi", name: "苏祺" }
+      }
+    }
+  ]
+};
+
+const poolCandidates = {
+  开发: [
+    {
+      id: "p-zhaoyi",
+      name: "赵一",
+      currentRole: "河北省区 运营负责人",
+      match: 92,
+      tags: ["开发经验 6年", "跨省调配", "近两年绩效 A"],
+      note: "拥有从运营转开发的项目经验，适合冀北、广东等开发空岗。",
+      readiness: "可在 2 周内到岗"
+    },
+    {
+      id: "p-wangwei",
+      name: "王伟",
+      currentRole: "天津省区 开发经理",
+      match: 87,
+      tags: ["现岗胜任", "储备池在库", "后备一梯队"],
+      note: "匹配度高，具备成熟开发团队管理经验。",
+      readiness: "可在 1 个月内轮岗"
+    },
+    {
+      id: "p-liujia",
+      name: "刘佳",
+      currentRole: "河南省区 代理开发负责人",
+      match: 80,
+      tags: ["代理经历", "熟悉区域业务", "晋升潜力"],
+      note: "适合作为代理转正或跨区补位候选。",
+      readiness: "需完成任职评审"
+    }
+  ],
+  营销: [
+    {
+      id: "p-chenguang",
+      name: "陈广",
+      currentRole: "江西省区 销售总监",
+      match: 90,
+      tags: ["营销经验 8年", "区域操盘", "后备干部"],
+      note: "适配湖北营销岗，拉新与团队搭建能力突出。",
+      readiness: "可在 3 周内到岗"
+    },
+    {
+      id: "p-zhoulei",
+      name: "周磊",
+      currentRole: "武汉大区 销售经理",
+      match: 84,
+      tags: ["市场拓展", "业绩稳定", "年轻储备"],
+      note: "适合作为第二候选，培养潜力较强。",
+      readiness: "可在 1 个月内到岗"
+    }
+  ]
+};
+
+const people = {
+  "p-zhaoyi": {
+    name: "赵一",
+    currentRole: "河北省区 运营负责人",
+    targetRole: "开发岗推荐人选",
+    age: 42,
+    years: "11年",
+    education: "本科",
+    score: 92,
+    rank: "M2",
+    mobile: "138****1209",
+    summary: "具备跨职能发展经验，运营、开发两条线都曾带队。",
+    tags: ["高潜干部", "开发储备", "可跨省调配"],
+    details: [
+      ["现任岗位", "河北省区 运营负责人"],
+      ["拟推荐岗位", "冀北省区 开发岗"],
+      ["任职年限", "现岗 2年 / 总司龄 11年"],
+      ["近三年绩效", "A / A / B+"],
+      ["管理跨度", "42人"],
+      ["可到岗时间", "2周内"]
+    ]
+  },
+  "p-wangwei": {
+    name: "王伟",
+    currentRole: "天津省区 开发经理",
+    targetRole: "开发岗推荐人选",
+    age: 39,
+    years: "9年",
+    education: "本科",
+    score: 87,
+    rank: "M2",
+    mobile: "137****2081",
+    summary: "开发序列背景扎实，适合成熟省区快速补位。",
+    tags: ["开发主线", "成熟任职", "稳定型干部"],
+    details: [
+      ["现任岗位", "天津省区 开发经理"],
+      ["拟推荐岗位", "广东省区 开发岗"],
+      ["任职年限", "现岗 3年 / 总司龄 9年"],
+      ["近三年绩效", "B+ / A / A"],
+      ["管理跨度", "28人"],
+      ["可到岗时间", "1个月内"]
+    ]
+  },
+  "p-liujia": {
+    name: "刘佳",
+    currentRole: "河南省区 代理开发负责人",
+    targetRole: "代理转正候选",
+    age: 36,
+    years: "8年",
+    education: "本科",
+    score: 80,
+    rank: "M1",
+    mobile: "136****0038",
+    summary: "在代理岗位表现稳定，可作为区域内部晋升候选。",
+    tags: ["代理转正", "本地晋升", "发展潜力"],
+    details: [
+      ["现任岗位", "河南省区 代理开发负责人"],
+      ["拟推荐岗位", "河南省区 开发岗"],
+      ["任职年限", "现岗 1年 / 总司龄 8年"],
+      ["近三年绩效", "B+ / B+ / A"],
+      ["管理跨度", "18人"],
+      ["可到岗时间", "通过评审后立即到岗"]
+    ]
+  },
+  "p-heyi": personFromName("何毅", "冀北省区经理"),
+  "p-gaohuanbao": personFromName("高焕宝", "冀北省区 运营官"),
+  "p-shixiaolei": personFromName("石小雷", "河南省区经理"),
+  "p-malizhi": personFromName("马立志", "河北省区 开发官"),
+  "p-yanghongji": personFromName("杨红记", "山西外围省区经理"),
+  "p-liucuiying": personFromName("刘翠英", "山西外围省区 运营官"),
+  "p-chenbin": personFromName("陈斌", "山西外围省区 开发官"),
+  "p-quyang": personFromName("屈洋", "山西中心省区经理"),
+  "p-yuanlinlin": personFromName("袁琳琳", "山西中心省区 运营官"),
+  "p-fengshaochuan": personFromName("冯少川", "天津省区经理"),
+  "p-chenjing": personFromName("陈靓", "天津省区 运营官"),
+  "p-liyurui": personFromName("李玉瑞", "鲁东省区经理"),
+  "p-zhuhaibin": personFromName("朱海宾", "鲁东省区 运营官"),
+  "p-fubin": personFromName("付宾", "鲁东省区 开发官"),
+  "p-wangfei_hb": personFromName("王飞", "鲁西省区经理"),
+  "p-haoqi": personFromName("郝琦", "鲁西省区 运营官"),
+  "p-zhaoyilin": personFromName("赵一霖", "鲁西省区 开发官"),
+  "p-wangfei": personFromName("王飞", "湖北省区经理"),
+  "p-zhoupeng": personFromName("周鹏", "湖北省区 运营负责人"),
+  "p-lixuan": personFromName("李轩", "湖北省区 开发负责人"),
+  "p-xiaoran": personFromName("肖然", "湖南省区经理"),
+  "p-tanghao": personFromName("唐浩", "湖南省区 营销负责人"),
+  "p-wenjie": personFromName("文杰", "湖南省区 运营负责人"),
+  "p-hanbo": personFromName("韩波", "湖南省区 开发负责人"),
+  "p-zhaojin": personFromName("赵进", "广东省区经理"),
+  "p-lucen": personFromName("鲁岑", "广东省区 营销负责人"),
+  "p-huaxin": personFromName("华欣", "广东省区 运营负责人"),
+  "p-guyuan": personFromName("顾远", "直属事业部负责人"),
+  "p-linyu": personFromName("林宇", "直属事业部 营销负责人"),
+  "p-chenke": personFromName("陈科", "直属事业部 运营负责人"),
+  "p-suqi": personFromName("苏祺", "直属事业部 开发负责人"),
+  "p-chenguang": personFromName("陈广", "江西省区 销售总监", 90),
+  "p-zhoulei": personFromName("周磊", "武汉大区 销售经理", 84)
+};
+
+function personFromName(name, currentRole, score = 86) {
+  return {
+    name,
+    currentRole,
+    targetRole: "干部详情查看",
+    age: 40,
+    years: "8年",
+    education: "本科",
+    score,
+    rank: "M1",
+    mobile: "139****0000",
+    summary: "用于展示从岗位卡片进入个人详情页的通用交互。",
+    tags: ["在岗干部", "信息样例"],
+    details: [
+      ["现任岗位", currentRole],
+      ["干部层级", "M1"],
+      ["任职年限", "现岗 2年"],
+      ["近三年绩效", "A / B+ / A"],
+      ["管理跨度", "20人"],
+      ["联系方式", "内部可见"]
+    ]
+  };
+}
+
+function getCurrentRegions() {
+  return regionData[state.activeArea] || [];
+}
+
+function getSummaryMetrics() {
+  const all = Object.values(regionData).flat();
+  return {
+    totalRegions: all.length,
+    totalVacancies: all.reduce((sum, item) => sum + item.totalVacancies, 0),
+    totalReserve: all.reduce((sum, item) => sum + item.reserveCount, 0)
+  };
+}
+
+function navigate(page, extra = {}) {
+  state.stack.push({
+    page: state.page,
+    activeArea: state.activeArea,
+    selectedRegionId: state.selectedRegionId,
+    selectedRole: state.selectedRole,
+    selectedPersonId: state.selectedPersonId
+  });
+  Object.assign(state, extra, { page });
+  render();
+}
+
+function goBack() {
+  const prev = state.stack.pop();
+  if (!prev) {
+    state.page = "dashboard";
+    render();
+    return;
+  }
+  Object.assign(state, prev);
+  render();
+}
+
+function setArea(area) {
+  state.activeArea = area;
+  render();
+}
+
+function openPool(regionId, role) {
+  navigate("pool", { selectedRegionId: regionId, selectedRole: role });
+}
+
+function openRegionManage(regionId) {
+  navigate("regionManage", { selectedRegionId: regionId });
+}
+
+function openProfile(personId) {
+  navigate("profile", { selectedPersonId: personId });
+}
+
+function goDashboard() {
+  state.page = "dashboard";
+  state.stack = [];
+  render();
+}
+
+function getSelectedRegion() {
+  const all = Object.values(regionData).flat();
+  return all.find(item => item.id === state.selectedRegionId);
+}
+
+function renderHeader(title, subtitle, actions = "") {
+  return `
+    <div class="topbar compact">
+      <button class="back-btn" onclick="goBack()">‹</button>
+      <div class="topbar-left">
+        <div>
+          <h1 class="title" style="font-size:20px">${title}</h1>
+          ${subtitle ? `<p class="subtitle">${subtitle}</p>` : ``}
+        </div>
+      </div>
+      ${actions ? `<div style="margin-left:auto">${actions}</div>` : ``}
+    </div>
+  `;
+}
+
+function renderDashboard() {
+  // 第一屏“干部空岗”统计：按你图里的口径展示（示例数据）
+  const vacancySummary = [
+    { label: "省区总经理", count: 2 },
+    { label: "省区营销官", count: 2 },
+    { label: "省区运营官", count: 2 },
+    { label: "省区开发官", count: 3 }
+  ];
+  return `
+    <div class="screen dashboard">
+      <div class="topbar">
+        <div>
+          <h1 class="title">干部看板</h1>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        ${dashboardTiles.map(tile => `
+          <div class="panel-tile">
+            <h4>${tile.title}</h4>
+          </div>
+        `).join("")}
+      </div>
+
+      <div class="summary-card" style="margin-top:14px">
+        <div class="summary-head">
+          <h4>干部空岗</h4>
+        </div>
+        <div class="summary-list">
+          ${vacancySummary.map(item => `
+            <div class="summary-item">
+              <small>${item.label}</small>
+              <strong>${item.count}人</strong>
+            </div>
+          `).join("")}
+        </div>
+        <div class="summary-actions">
+          <button class="ghost-btn" onclick="navigate('regions')">查看各部门空岗情况</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function toggleSlash(el) {
+  if (!el) return;
+  el.classList.toggle("show");
+}
+
+function renderRegions() {
+  const companySections = areas.map(area => ({
+    area,
+    title: area.replace("公司", "分公司"),
+    items: regionData[area] || [],
+    vacancyCount: (regionData[area] || []).reduce((sum, item) => sum + item.totalVacancies, 0)
+  }));
+
+  return `
+    <div class="screen">
+      ${renderHeader("各部门干部空岗详情", "", ``)}
+
+      ${companySections.map(section => `
+        <div class="table-card" style="margin-top:14px">
+          <div class="table-toolbar">
+            <h4>${section.title}</h4>
+            <div class="count">空岗数量：<span class="badge danger">${section.vacancyCount}</span></div>
+          </div>
+          <div class="table-scroll">
+            <table class="vacancy-table" aria-label="${section.title}干部空岗详情表">
+              <colgroup>
+                <col style="width:28%">
+                <col style="width:18%">
+                <col style="width:18%">
+                <col style="width:18%">
+                <col style="width:18%">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th>省区名称</th>
+                  <th>总经理</th>
+                  <th>营销官</th>
+                  <th>运营官</th>
+                  <th>开发官</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${section.items.map(region => renderVacancyRow(region)).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function renderVacancyRow(region) {
+  const mapping = [
+    { label: "总经理", key: "总经理", detail: region.positions.总经理 },
+    { label: "营销官", key: "营销", detail: region.positions.营销 },
+    { label: "运营官", key: "运营", detail: region.positions.运营 },
+    { label: "开发官", key: "开发", detail: region.positions.开发 }
+  ];
+
+  return `
+    <tr>
+      <td class="region-cell">
+        <button class="cell-link" onclick="openRegionManage('${region.id}')">${region.name}</button>
+      </td>
+      ${mapping.map(col => `<td>${renderVacancyCell(col.key, col.detail, region.id)}</td>`).join("")}
+    </tr>
+  `;
+}
+
+function renderVacancyCell(roleKey, detail, regionId) {
+  // 无编制：显示 /
+  if (detail.type === "none") {
+    return `
+      <span class="slash-inline" role="button" tabindex="0" onclick="toggleSlash(this)">
+        <span class="slash">/</span>
+        <span class="slash-note">暂无编制</span>
+      </span>
+    `;
+  }
+
+  // 有在岗干部：显示姓名，可点进个人详情
+  if (detail.type === "person") {
+    return `<button class="link-person inline" onclick="openProfile('${detail.personId}')">${detail.name}</button>`;
+  }
+
+  // 代理：显示 姓名（代理）
+  if (detail.type === "proxy") {
+    return `<button class="link-person inline" onclick="openProfile('${detail.personId}')">${detail.name}（${detail.proxyLabel}）</button>`;
+  }
+
+  // 空岗：显示 空岗 + 储备人数（可点进干部池）
+  return `
+    <div class="cell-stack">
+      <button class="vacancy-pill blank" aria-label="查看储备干部池" title="查看储备干部池" onclick="openPool('${regionId}', '${roleKey}')"></button>
+    </div>
+  `;
+}
+
+function renderPool() {
+  const region = getSelectedRegion() || Object.values(regionData).flat()[0];
+  const role = state.selectedRole || "开发";
+  const candidates = poolCandidates[role] || [];
+
+  return `
+    <div class="screen">
+      ${renderHeader("储备干部池", `${region.name} · ${role}岗候选人`, ``)}
+
+      <div class="candidate-list">
+        ${candidates.map(item => `
+          <div class="candidate-card">
+            <div class="candidate-head">
+              <div class="candidate-name">
+                <div class="avatar"><span class="avatar-glyph">👤</span></div>
+                <div>
+                  <h4>${item.name}</h4>
+                  <p>${item.currentRole}</p>
+                </div>
+              </div>
+            </div>
+            <p class="helper-text">${item.note}</p>
+            <div class="tags">
+              ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join("")}
+              <span class="tag">${item.readiness}</span>
+            </div>
+            <div class="candidate-actions">
+              <button class="primary-btn" onclick="openProfile('${item.id}')">查看详情</button>
+            </div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderRegionManage() {
+  const region = getSelectedRegion() || Object.values(regionData).flat()[0];
+  const persons = Object.values(region.positions).filter(item => item.type === "person" || item.type === "proxy");
+  const regionPageStats = {
+    "hb-lx": { company: "华北分公司", region: "华北分公司鲁西省区", liveStores: 412, buildingStores: 81, area: 8.2 },
+    "hb-ld": { company: "华北分公司", region: "华北分公司鲁东省区", liveStores: 356, buildingStores: 64, area: 7.1 },
+    "hb-jb": { company: "华北分公司", region: "华北分公司冀北省区", liveStores: 298, buildingStores: 52, area: 6.4 },
+    "hb-heb": { company: "华北分公司", region: "华北分公司河北省区", liveStores: 305, buildingStores: 48, area: 6.0 },
+    "hb-sxwf": { company: "华北分公司", region: "华北分公司山西外围省区", liveStores: 242, buildingStores: 33, area: 5.2 },
+    "hb-sxzx": { company: "华北分公司", region: "华北分公司山西中心省区", liveStores: 264, buildingStores: 39, area: 5.8 },
+    "hb-tj": { company: "华北分公司", region: "华北分公司天津省区", liveStores: 188, buildingStores: 26, area: 3.4 }
+  };
+  const stat = regionPageStats[region.id] || { company: `${region.area.replace("公司", "分公司")}`, region: `${region.area.replace("公司", "分公司")}${region.name}`, liveStores: 210, buildingStores: 30, area: 4.8 };
+  return `
+    <div class="screen">
+      ${renderHeader("华住干部", "", ``)}
+
+      <div class="manage-overview">
+        <div class="manage-data-card">
+          <h4>省区干部数据</h4>
+          <div class="manage-filters">
+            <div class="manage-filter">${stat.company}</div>
+            <div class="manage-filter">${stat.region}</div>
+          </div>
+        </div>
+
+        <div class="manage-summary-card">
+          <h4>管理范围</h4>
+          <div class="manage-metrics">
+            <div class="manage-metric">
+              <strong>${stat.liveStores}</strong>
+              <span>在营店数</span>
+            </div>
+            <div class="manage-metric">
+              <strong>${stat.buildingStores}</strong>
+              <span>在建店数</span>
+            </div>
+          </div>
+          <div class="manage-wide-stat">
+            <strong>${stat.area}</strong> 平方公里
+            <span>管辖面积</span>
+          </div>
+        </div>
+
+        <div class="manage-section-card">
+          <h4>省区管理指数</h4>
+          <button class="manage-index-btn" type="button">查看省区管理指数</button>
+        </div>
+
+        ${persons.length ? `
+          <div class="manage-cadre-card">
+            <div class="manage-role-tabs">
+              <div class="manage-role-tab active">省区总经理</div>
+              <div class="manage-role-tab">省区营销官</div>
+              <div class="manage-role-tab">省区运营官</div>
+              <div class="manage-role-tab">省区开发官</div>
+            </div>
+            <div class="manage-cadre-top">
+              <div class="manage-cadre-name">
+                <div class="avatar"><span class="avatar-glyph">👤</span></div>
+                <div>
+                  <h4>${persons[0].name}${persons[0].type === "proxy" ? "（代理）" : ""}</h4>
+                  <p>${region.name}</p>
+                </div>
+              </div>
+              <span class="badge primary">M2</span>
+            </div>
+
+            <div class="mini-tags">
+              <span class="mini-tag">省区总经理</span>
+              <span class="mini-tag">区域经理</span>
+              <span class="mini-tag">大区经理</span>
+            </div>
+
+            <div class="candidate-actions">
+              <button class="primary-btn" onclick="openProfile('${persons[0].personId}')">查看详情</button>
+            </div>
+          </div>
+        ` : ``}
+      </div>
+    </div>
+  `;
+}
+
+function renderProfile() {
+  const person = people[state.selectedPersonId] || people["p-zhaoyi"];
+  return `
+    <div class="screen">
+      ${renderHeader("干部个人详情", "从岗位卡片或储备池进入", ``)}
+
+      <div class="profile-card">
+        <div class="profile-top">
+          <div class="avatar"><span class="avatar-glyph">👤</span></div>
+          <div class="profile-head">
+            <div class="profile-headline">
+              <div>
+                <h3>${person.name}</h3>
+                <p>${person.currentRole}</p>
+              </div>
+              <span class="badge primary">${person.rank}</span>
+            </div>
+            <div class="tags">
+              ${person.tags.map(tag => `<span class="tag">${tag}</span>`).join("")}
+            </div>
+          </div>
+        </div>
+
+        <div class="progress-box">
+          <span>岗位匹配度 ${person.score} 分</span>
+          <div class="progress-track">
+            <div class="progress-bar" style="width:${person.score}%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <h4>个人信息</h4>
+        <div class="detail-list">
+          <div class="detail-row"><span>年龄</span><strong>${person.age}</strong></div>
+          <div class="detail-row"><span>学历</span><strong>${person.education}</strong></div>
+          <div class="detail-row"><span>司龄</span><strong>${person.years}</strong></div>
+          <div class="detail-row"><span>联系方式</span><strong>${person.mobile}</strong></div>
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <h4>任职信息</h4>
+        <div class="detail-list">
+          ${person.details.map(([label, value]) => `
+            <div class="detail-row"><span>${label}</span><strong>${value}</strong></div>
+          `).join("")}
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <h4>推荐说明</h4>
+        <div class="detail-list">
+          <div class="detail-row">
+            <small>${person.summary}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function render() {
+  const app = document.getElementById("app");
+  if (!app) return;
+  const pages = {
+    dashboard: renderDashboard,
+    regions: renderRegions,
+    regionManage: renderRegionManage,
+    pool: renderPool,
+    profile: renderProfile
+  };
+  app.innerHTML = (pages[state.page] || renderDashboard)();
+}
+
+window.navigate = navigate;
+window.goBack = goBack;
+window.setArea = setArea;
+window.openPool = openPool;
+window.openRegionManage = openRegionManage;
+window.openProfile = openProfile;
+window.goDashboard = goDashboard;
+window.toggleSlash = toggleSlash;
+
+render();
+
+</script>
+
+</body></html>
